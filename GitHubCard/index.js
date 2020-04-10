@@ -5,12 +5,13 @@
 
 const entryPoint = document.querySelector('.cards')
 
+const followersArray = ['ohman4', 'Istott', 'ToEndThePeace', 'sadamexx', 'tyler-row'];
+
 axios.get('https://api.github.com/users/shayne-smith')
   .then( response => {
 
 
     const userCard = createUserCard(response.data)
-    debugger
     entryPoint.appendChild(userCard)
     console.log(response.data)
     console.log('Success!')
@@ -18,6 +19,19 @@ axios.get('https://api.github.com/users/shayne-smith')
   .catch( err => {
     console.log(`Unable to retrieve Github personal data: ${err}`)
   })
+
+followersArray.forEach(user => {
+  axios.get(`https://api.github.com/users/${user}`)
+    .then(response => {
+      const userCard = createUserCard(response.data)
+      entryPoint.appendChild(userCard)
+      console.log(response.data)
+      console.log('Success!')
+    })
+    .catch(err => {
+      console.log('There was an error retrieving user\'s records')
+    })
+})
 
 
 /* Step 2: Inspect and study the data coming back, this is YOUR 
@@ -40,8 +54,6 @@ axios.get('https://api.github.com/users/shayne-smith')
           Using that array, iterate over it, requesting data for each user, creating a new card for each
           user, and adding that card to the DOM.
 */
-
-const followersArray = ['ohman4', 'Istott', 'ToEndThePeace', 'sadamexx', 'tyler-row'];
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
@@ -101,8 +113,8 @@ function createUserCard(userInfo) {
   address.href = userInfo.html_url
 
   // set text content using argument
-  name.textContent = `${userInfo.name}`
-  username.textContent = `${userInfo.login}`
+  name.textContent = userInfo.name
+  username.textContent = userInfo.login
   location.textContent = `Location: ${userInfo.location}`
   profile.textContent = `Profile: ${userInfo.html_url}`
   followers.textContent = `Followers: ${userInfo.followers}`
@@ -111,21 +123,6 @@ function createUserCard(userInfo) {
 
   return card
 }
-
-followersArray.forEach(user => {
-  axios.get(`'https://api.github.com/users/${user}'`)
-    .then(response => {
-      const userCard = createUserCard(response.data)
-      debugger
-      entryPoint.appendChild(userCard)
-      console.log(response.data)
-      console.log('Success!')
-    })
-    .catch(err => {
-      console.log('There was an error retrieving user\'s records')
-      debugger
-    })
-})
 
 
 
