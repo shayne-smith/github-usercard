@@ -3,10 +3,12 @@
            https://api.github.com/users/<your name>
 */
 
-const entryPoint = document.querySelector('.entry')
+const entryPoint = document.querySelector('.cards')
 
 axios.get('https://api.github.com/users/shayne-smith')
   .then( response => {
+
+
     const userCard = createUserCard(response.data)
     debugger
     entryPoint.appendChild(userCard)
@@ -14,7 +16,7 @@ axios.get('https://api.github.com/users/shayne-smith')
     console.log('Success!')
   })
   .catch( err => {
-    console.log('Unable to retrieve Github personal data')
+    console.log(`Unable to retrieve Github personal data: ${err}`)
   })
 
 
@@ -95,14 +97,14 @@ function createUserCard(userInfo) {
   username.classList.add('username')
 
   // set source and href using argument
-  // image.src = userInfo.avatar_url
+  image.src = userInfo.avatar_url
   address.href = userInfo.html_url
 
   // set text content using argument
   name.textContent = `${userInfo.name}`
   username.textContent = `${userInfo.login}`
-  location.textContent = `${userInfo.location}`
-  profile.textContent = `Profile: ${userInfo.url}`
+  location.textContent = `Location: ${userInfo.location}`
+  profile.textContent = `Profile: ${userInfo.html_url}`
   followers.textContent = `Followers: ${userInfo.followers}`
   following.textContent = `Following: ${userInfo.following}`
   bio.textContent = `Bio: ${userInfo.bio}`
@@ -121,6 +123,7 @@ followersArray.forEach(user => {
     })
     .catch(err => {
       console.log('There was an error retrieving user\'s records')
+      debugger
     })
 })
 
